@@ -14,6 +14,7 @@ var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+app.listen(console.log(`El servidor esta funcionando correctamente en el puerto ${port}` )); // CODIGO PARA QUE TIRE EL MENSAJE EN LA CONSOLA
 
 /**
  * Create HTTP server.
