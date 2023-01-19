@@ -1,32 +1,13 @@
 const express = require('express');
-const { getAll, Add } = require('../../../../controller/libroController');
-const conexion = require('../../../../database/db');
+const { getAll, Add, GetById, GetByName } = require('../../../../controller/libroController');
 const router = express.Router();
-// const { getAll } = require('../../../../controller/libroController');
 
+// ROUTES
 router.get('/all', getAll);
 router.post('/add', Add);
+// OBTENER DATOS
+router.get('/ById/:id', GetById);
+router.get('/ByName/:name', GetByName);
 
-// const conexion  = require('../../../../database/db'); //CONEXION
-
-// const Libro = require('../../../../controller/libroController');
-// const LibroModel = new Libro();
-
-
-// METODO GET
-// router.get('/all', LibroModel.getAll);
-
-//
-
-// router.get('/all', (req, res)=> {
-//     conexion.query('SELECT * FROM bibliotecabd.libros;', (error, result)=> {
-//         if (error) {
-//             throw error;
-//         } else {
-//             console.log(result);
-//             res.send(result)
-//         }
-//     })
-// })
 
 module.exports = router;
