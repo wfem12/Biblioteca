@@ -68,4 +68,54 @@ controller.GetByName = async (req, res) => {
     });
 }
 
+// ******************************************************************************************************************************* //
+// HACER UN PUT(UPDATE)
+controller.Update = async (req, res) => {
+    const { id } = req.params;
+    const { nombreLibro } = req.body;
+    conexion.query('UPDATE libros SET nombreLibro = ? WHERE idLibro = ?', [nombreLibro, id], (error, result) => {
+        // CONDICION QUE SI NO ACTUALIZO TIRE UN MENSAJE QUE DIGA QUE NO FUE RECIBIDO LA PETICION
+        if (result.affectedRows === 0) {
+            console.log("NO RECIBIDO");
+            res.status(404).json({
+                status: "Failed",
+                message: `El id ${id} no fue encontrado`,
+            });
+        } else {
+            if (error) {
+                console.log(error);
+            }
+            console.log(result);
+            res.status(200).json({
+                status: 'Actualizado',
+                message: `id del libro Actualizado: ${id}` ,
+
+            })
+        }
+    });
+
+}
+
+// conexion.query('UPDATE Libros SET nombreLibro = ? WHERE idLibro = ?', [nombreLibro, id], (error, result) => {
+//     if (error) {
+//         console.log(error);
+//     }
+//     console.log(result);
+//     res.send(result);
+// })
+// const { id } = req.params;
+// const { nombreLibro } = req.body;
+// ******************************************************************************************************************************* //
+// HACER UN DELETE
+controller.Delete = async (req, res) => {
+    const id = req.params.id;
+    conexion.query('DELETE FROM bibliotecabd.libros WHERE idLibro = ?', [id], (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        console.log(result);
+        res.send(result);
+    })
+}
+
 module.exports = controller;
