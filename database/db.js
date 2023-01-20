@@ -3,10 +3,10 @@ const mysql = require('mysql');
 
 // Conexion
 const conexion = mysql.createConnection({
-    host: 'localhost',
-    database: 'bibliotecabd',
-    user: 'root',
-    password: '1234',
+    host: process.env.HOST,
+    database: process.env.DATABASE,
+    user: process.env.USER,
+    password: process.env.PASSWORD ,
 });
 
 // En caso exista un error

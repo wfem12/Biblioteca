@@ -3,6 +3,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//  PARA QUE LAS VARIABLES DE ENTORNO PUEDA SER UTILIZADA
+const dotenv = require('dotenv');
+dotenv.config({path: './database/.env'});
+
 // ARCHIVOS A LLAMAR
 var apiRouter = require('./routes/api/api');
 var indexRouter = require('./routes/index');
