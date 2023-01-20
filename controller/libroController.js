@@ -1,5 +1,6 @@
 // const express = require('express');
 // const route = express.Router();
+const { json } = require('express');
 const conexion = require('../database/db'); //CONEXION
 
 controller = {};
@@ -21,14 +22,25 @@ controller.Add = async (req, res) => {
     //IMPORTANTE: TIENE QUE SER EL MISMO NOMBRE QUE ESTA EN LA BASE DE DATOS
     //HACERLO EN EL APARTADO DE FORM-ENCODE O JSON
     const { idLibro, nombreLibro } = req.body;
-    conexion.query('INSERT INTO Libros(idLibro, nombreLibro) VALUES(?, ?)', [idLibro, nombreLibro], (error, result) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(result);
-            res.send(result);
-        }
-    });
+    try {
+        conexion.query('INSERT INTO Libros(idLibro, nombreLibro) VALUES(?, ?)', [idLibro, nombreLibro]);
+        res.status(200).json({
+            status: 'OK',
+            message: 'Libro Agregado',
+            results: [`id: ${idLibro}`, `nombre: ${nombreLibro}`],
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ status: 'failed' });
+    }
+    // conexion.query('INSERT INTO Libros(idLibro, nombreLibro) VALUES(?, ?)', [idLibro, nombreLibro], (error, result) => {
+    //     if (error) {
+    //         console.log(error);
+    //     } else {
+    //         console.log(result);
+    //         res.send(result);
+    //     }
+    // });
 }
 // ******************************************************************************************************************************* //
 
@@ -87,8 +99,9 @@ controller.Update = async (req, res) => {
             }
             console.log(result);
             res.status(200).json({
-                status: 'Actualizado',
-                message: `id del libro Actualizado: ${id}` ,
+                status: 'OK',
+                message: `Libro actualizado Correctamente`,
+                results: [`id: ${id}`, `nombre: ${nombreLibro}`],
 
             })
         }
@@ -96,26 +109,29 @@ controller.Update = async (req, res) => {
 
 }
 
-// conexion.query('UPDATE Libros SET nombreLibro = ? WHERE idLibro = ?', [nombreLibro, id], (error, result) => {
-//     if (error) {
-//         console.log(error);
-//     }
-//     console.log(result);
-//     res.send(result);
-// })
-// const { id } = req.params;
-// const { nombreLibro } = req.body;
 // ******************************************************************************************************************************* //
 // HACER UN DELETE
 controller.Delete = async (req, res) => {
     const id = req.params.id;
-    conexion.query('DELETE FROM bibliotecabd.libros WHERE idLibro = ?', [id], (error, result) => {
-        if (error) {
-            console.log(error);
-        }
-        console.log(result);
-        res.send(result);
-    })
+    conexion.query('DELETE FROM bibliotecabd.libros WHERE idLibro = ?', [id]);
+    try {
+        res.status(200).json({
+            status: 'OK',
+            message: 'Libro Eliminado Correctamente',
+            results: `id: ${id}`,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({status: 'failed'});
+
+    }
+    // conexion.query('DELETE FROM bibliotecabd.libros WHERE idLibro = ?', [id], (error, result) => {
+    //     if (error) {
+    //         console.log(error);
+    //     }
+    //     console.log(result);
+    //     res.send(result);
+    // })
 }
 
 module.exports = controller;
